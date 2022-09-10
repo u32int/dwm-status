@@ -1,6 +1,7 @@
 #include "modules.h"
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <time.h>
 
 static char glob_buff[128];
@@ -33,6 +34,17 @@ const char *datetime(const char *format)
     time_t t = time(NULL);
     if (!strftime(glob_buff, sizeof(glob_buff), format, localtime(&t)))
         return "Error: datetime too long or empty";
+
+    return glob_buff;
+}
+
+const char *load_avg(const char *arg)
+{
+    double avg[3];
+    if (getloadavg(avg, 3) == -1)
+        return "Error: load avg";
+
+    snprintf(glob_buff, 32, "%.2f %.2f %.2f", avg[0], avg[1], avg[2]);
 
     return glob_buff;
 }

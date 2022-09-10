@@ -20,14 +20,17 @@
  color_bg     NULL/unused 
 
  time         strftime time format - read 'man 3 strftime'
+ loadavg      NULL
 */
 
 static const struct module modules[] = {
-    {text, "sample text ", -1},
-    {color_fg, "#ffffff", -1},
-    {text, "[", -1},
-    {datetime, "%d/%b/%Y %H:%M", 10},
-    {text, "]", -1},
+    {load_avg, NULL,              2},
+    {text,     " ",              -1},
+    {text,     "sample text ",   -1},
+    {color_fg, "#ffffff",        -1},
+    {text,     "[",              -1},
+    {datetime, "%d/%b/%Y %H:%M",  1},
+    {text,     "]",              -1},
 };
 
 #define MODULES_LEN (sizeof(modules) / sizeof(modules[0]))

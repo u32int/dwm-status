@@ -48,7 +48,7 @@ int main()
     }
 
     struct timespec refresh;
-    refresh.tv_sec  = MIN_REFRESH_MS / 1000;
+    refresh.tv_sec  = MIN_REFRESH_MS / 1000L;
     refresh.tv_nsec = MIN_REFRESH_MS * 1000000L;
 
     /* cache initial values */

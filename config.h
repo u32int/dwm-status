@@ -20,13 +20,15 @@
  color_bg     NULL/unused 
 
  time         strftime time format - read 'man 3 strftime'
- loadavg      NULL
+ loadavg      "all" = 1,5,15 min avg, NULL/empty = only 1 min avg
+ mem_used     "K", "M" or "G" corresponding to units.
 */
 
 static const struct module modules[] = {
+    {mem_used, "M",               2},
+    {text,     " & ",            -1},
     {load_avg, NULL,              2},
     {text,     " ",              -1},
-    {text,     "sample text ",   -1},
     {color_fg, "#ffffff",        -1},
     {text,     "[",              -1},
     {datetime, "%d/%b/%Y %H:%M",  1},

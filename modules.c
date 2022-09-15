@@ -41,7 +41,7 @@ const char *datetime(const char *format)
 {
     time_t t = time(NULL);
     if (!strftime(glob_buff, sizeof(glob_buff), format, localtime(&t)))
-        return "Error: datetime too long or empty";
+        return "[Error: datetime too long or empty]";
 
     return glob_buff;
 }
@@ -50,14 +50,14 @@ const char *load_avg(const char *arg)
 {
     static double avg[3];
     if (getloadavg(avg, 3) == -1)
-        return "Error: load avg";
+        return "[Error: load avg]";
 
     if (arg == NULL || arg[0] == 0) {
         snprintf(glob_buff, 32, "%.2f", avg[0]);
     } else if (!strncmp(arg, "all", 3)){
         snprintf(glob_buff, 32, "%.2f %.2f %.2f", avg[0], avg[1], avg[2]);
     } else {
-        return "Error: loadavg invalid argument";
+        return "[Error: loadavg invalid argument]";
     }
 
     return glob_buff;

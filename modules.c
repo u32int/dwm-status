@@ -5,8 +5,12 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
+#include <sys/statvfs.h>
+#include <errno.h>
 
 #include "util.h"
+
+int getloadavg(double loadavg[], int nelem);
 
 static char glob_buff[128];
 
@@ -106,5 +110,27 @@ const char *mem_used(const char *arg)
     }
 
     snprintf(glob_buff, 128, "%d%s", sum, arg);
+    return glob_buff;
+}
+
+
+const char *disk_free(const char *path)
+{
+    struct statvfs fs_stats;
+
+    if (statvfs(path, &fs_stats) == -1) {
+        return strerror(errno);
+    }
+
+    static const char suffixes[] = {'K', 'M', 'G', 'T'};
+
+    size_t free_kb = fs_stats.f_bsize*fs_stats.f_bavail;
+    size_t i = 0;
+    while (free_kb > 1024 && i < sizeof(suffixes)) {
+        free_kb /= 1024;
+        i++;
+    }
+
+    snprintf(glob_buff, 128, "%lu%c", free_kb, suffixes[i-1]);
     return glob_buff;
 }

@@ -2,7 +2,7 @@
 #include "modules.h"
 
 #define STATUS_MAX_LEN 256
-#define MIN_REFRESH_MS 999
+#define MIN_REFRESH_MS 1000
 
 /*
   Modules have three fields:

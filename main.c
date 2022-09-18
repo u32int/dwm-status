@@ -39,8 +39,7 @@ void print_cache()
 
 int main()
 {
-    int ldelay = 1;
-    int timer = 0;
+    int ldelay = 1, timer = 0;
 
     if (!(display = XOpenDisplay(NULL))) {
         fputs("Error: failed to open X display. Is a graphical session running?", stderr);

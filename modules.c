@@ -5,13 +5,16 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
-#include <sys/statvfs.h>
 #include <errno.h>
+
+#include <sys/statvfs.h>
+#include <sys/utsname.h>
 
 #include "util.h"
 
 int getloadavg(double loadavg[], int nelem);
 
+static const char unit_suffixes[] = {'K', 'M', 'G', 'T'};
 static char glob_buff[128];
 
 const char *text(const char *arg)
@@ -44,6 +47,19 @@ const char *datetime(const char *format)
         return "[Error: datetime too long or empty]";
 
     return glob_buff;
+}
+
+const char *kernel_ver(const char *arg)
+{
+    (void) arg;
+    static struct utsname data;
+
+    if (uname(&data) != 0) {
+        return strerror(errno);
+    }
+
+    snprintf(glob_buff, 128, "%s", data.release);
+    return  glob_buff;
 }
 
 const char *load_avg(const char *arg)
@@ -122,15 +138,14 @@ const char *disk_free(const char *path)
         return strerror(errno);
     }
 
-    static const char suffixes[] = {'K', 'M', 'G', 'T'};
 
     size_t free_kb = fs_stats.f_bsize*fs_stats.f_bavail;
     size_t i = 0;
-    while (free_kb > 1024 && i < sizeof(suffixes)) {
+    while (free_kb > 1024 && i < sizeof(unit_suffixes)) {
         free_kb /= 1024;
         i++;
     }
 
-    snprintf(glob_buff, 128, "%lu%c", free_kb, suffixes[i-1]);
+    snprintf(glob_buff, 128, "%lu%c", free_kb, unit_suffixes[i-1]);
     return glob_buff;
 }

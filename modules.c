@@ -152,6 +152,8 @@ const char *disk_free(const char *path)
 
 const char *battery_percent(const char *path)
 {
+    (void)path; /* TODO handle path */
+
     size_t energy_full, energy_now;
 
     FILE *ef = fopen("/sys/class/power_supply/BAT0/energy_full", "r");
@@ -169,6 +171,8 @@ const char *battery_percent(const char *path)
 
 const char *battery_status(const char *path)
 {
+    (void)path; /* TODO handle path */
+
     FILE *s = fopen("/sys/class/power_supply/BAT0/status", "r");
     fscanf(s, "%s", glob_buff);
     fclose(s);

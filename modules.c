@@ -149,3 +149,29 @@ const char *disk_free(const char *path)
     snprintf(glob_buff, 128, "%lu%c", free_kb, unit_suffixes[i-1]);
     return glob_buff;
 }
+
+const char *battery_percent(const char *path)
+{
+    size_t energy_full, energy_now;
+
+    FILE *ef = fopen("/sys/class/power_supply/BAT0/energy_full", "r");
+    fscanf(ef, "%lu", &energy_full);
+
+    FILE *en = fopen("/sys/class/power_supply/BAT0/energy_now", "r");
+    fscanf(en, "%lu", &energy_now);
+
+    fclose(en);
+    fclose(ef);
+
+    snprintf(glob_buff, 128, "%.1f", (double)energy_now/energy_full*100);
+    return glob_buff;
+}
+
+const char *battery_status(const char *path)
+{
+    FILE *s = fopen("/sys/class/power_supply/BAT0/status", "r");
+    fscanf(s, "%s", glob_buff);
+    fclose(s);
+
+    return glob_buff;
+}

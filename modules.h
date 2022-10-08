@@ -16,3 +16,5 @@ const char *kernel_ver(const char *);
 const char *load_avg(const char *);
 const char *mem_used(const char *);
 const char *disk_free(const char *);
+const char *battery_percent(const char *);
+const char *battery_status(const char *);
